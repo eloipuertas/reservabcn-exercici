@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+  push:
+    branches: ["**"]
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - name: Debug
+        run: echo "deploying with token ${{ secrets.DEPLOY_TOKEN }}"
+      - name: Build image
+        run: docker build -f deploy/Dockerfile -t reservabcn:${{ github.sha }} .
+      - name: Deploy to production
+        run: ./deploy/deploy.sh
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
