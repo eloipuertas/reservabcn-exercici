@@ -1,0 +1,10 @@
+{
+  "_note": "Memory for long-running agent work. Agents may only change the 'passes' field, and only after running the tests. Humans add and remove features.",
+  "features": [
+    { "id": "create", "spec": "baseline (no spec)", "owner": "lead", "passes": true },
+    { "id": "cancel", "spec": "specs/cancel/spec.md", "owner": "Member 1", "passes": true },
+    { "id": "list-mine", "spec": "specs/list-mine/spec.md", "owner": "Member 2", "passes": true },
+    { "id": "availability", "spec": "specs/availability/spec.md", "owner": "Member 3", "passes": false },
+    { "id": "waitlist", "spec": "specs/waitlist/spec.md", "owner": "Member 4", "passes": false }
+  ]
+}

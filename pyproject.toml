@@ -1,0 +1,20 @@
+[project]
+name = "reservabcn-exercici"
+version = "0.1.0"
+description = "Exercise repository: from a user story to code, agent rules and guardrails (ReservaBCN)."
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "scripts"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI declares dependencies with Depends() in argument defaults.
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Header"]

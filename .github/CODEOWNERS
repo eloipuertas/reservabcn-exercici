@@ -1,0 +1,22 @@
+# Replace the placeholder teams with your own GitHub teams or user names.
+# Lines with owners that do not exist are skipped by GitHub, so nothing is enforced until you edit this.
+# The last matching line wins. With "Require review from Code Owners" turned on in the
+# branch rule for main, a pull request that touches a path needs approval from one of its owners.
+
+# Default: someone from the team leads reviews everything.
+*                      @YOUR-ORG/team-leads
+
+# Humans own the rules of the game: specs, CI, agent definitions and instructions.
+/specs/                @YOUR-ORG/product-owners
+/.github/              @YOUR-ORG/team-leads
+/.claude/              @YOUR-ORG/team-leads
+/AGENTS.md             @YOUR-ORG/team-leads
+/CLAUDE.md             @YOUR-ORG/team-leads
+
+# Shared contracts: one owner.
+/app/models.py         @YOUR-ORG/team-leads
+/app/db.py             @YOUR-ORG/team-leads
+/app/auth.py           @YOUR-ORG/team-leads
+/app/clock.py          @YOUR-ORG/team-leads
+/app/main.py           @YOUR-ORG/team-leads
+/tests/conftest.py     @YOUR-ORG/team-leads

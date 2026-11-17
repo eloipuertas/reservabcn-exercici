@@ -1,0 +1,48 @@
+name: QA agent review (advisory)
+
+# Optional. Needs the repository secret ANTHROPIC_API_KEY and the Claude GitHub App
+# (run `/install-github-app` in Claude Code, or follow the Claude Code GitHub Actions docs).
+# This check is ADVISORY: do not add it to the required status checks. A human decides.
+# Test it on a throwaway pull request first and read the action's current documentation:
+# input names and defaults change between versions.
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+
+concurrency:
+  group: qa-agent-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  qa-review:
+    # Secrets are not available to pull requests from forks, so review same-repo branches only.
+    if: github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            You are the QA reviewer defined in .claude/agents/qa-reviewer.md. Follow that file exactly.
+            Review pull request #${{ github.event.pull_request.number }} in ${{ github.repository }}.
+            Find the spec under specs/ that this branch implements (branch name: ${{ github.head_ref }}).
+            Compare the diff with origin/${{ github.base_ref }}. Run the project checks.
+            Post your review as ONE comment on the pull request. You must not edit files or approve.
+          claude_args: >-
+            --max-turns 12
+            --allowedTools "Read,Glob,Grep,Bash(git diff *),Bash(git log *),Bash(pytest *),Bash(ruff *),Bash(python scripts/check_req_coverage.py),Bash(gh pr comment *)"
