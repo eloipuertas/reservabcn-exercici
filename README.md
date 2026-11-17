@@ -9,13 +9,36 @@ Tool-agnostic parts: `AGENTS.md`, `specs/`, CI, CODEOWNERS, `scripts/`. Claude C
 
 ## Quick start
 
+There are two ways to get the repository. Use whichever your course tells you to.
+
+**A. Fork.** On GitHub press **Fork** on the exercise repository, then clone your fork:
+
+```bash
+git clone https://github.com/<user>/reservabcn-exercici
+cd reservabcn-exercici
+```
+
+**B. ZIP.** Download the ZIP (GitHub: **Code, Download ZIP**, or the ZIP from the virtual campus), unzip it and enter the folder.
+A ZIP has no git history, so create it:
+
+```bash
+git init -b main && git add . && git commit -m "starter"
+```
+
+Then, with either way:
+
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-git init -b main && git add . && git commit -m "starter"
 git switch -c feat/edit-party
 pytest -q                                # 46 tests, all green
 ```
+
+Notes:
+
+- GitHub leaves the workflows disabled in a fork. The exercise does not need them. To see `ci.yml` run, enable Actions in the Actions tab of the fork.
+- A fork of a public repository is public. The secrets in `deploy/.env.prod` are fake.
+- The variant with three computers needs one shared remote with write access for the three people: the fork of one member (add the others as collaborators), or a new GitHub repository created from the ZIP.
 
 ## The commands of the project
 
